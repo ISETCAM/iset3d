@@ -100,6 +100,10 @@ scene3d.debugMode = false;
 scene3d.set('accommodation',2);   % Diopters
 scene3d.set('rays per pixel',128);
 [oi, result] = scene3d.render('render type','both');
+%{
+piWrite(scene3d.recipe);
+[oi, result] = piRender(scene3d.recipe, 'render type','radiance');
+%}
 oiWindow(oi);
 
 %% Chess set scaled
