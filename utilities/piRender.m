@@ -258,7 +258,7 @@ for ii = 1:length(filesToRender)
     currFile = filesToRender{ii};
 
     %% Build the docker command
-    dockerCommand   = 'docker run -ti --rm';
+    
 
     [~,currName,~] = fileparts(currFile);
 
@@ -268,7 +268,10 @@ for ii = 1:length(filesToRender)
     end
 
     outFile = fullfile(outputFolder,'renderings',[currName,'.dat']);
-
+    %{
+    % TO BE REPLACED BY FUNCTION: piDockerBuildCommand().
+    dockerCommand   = 'docker run -ti --rm';
+    
     if ispc  % Windows
         outF = strcat('renderings/',currName,'.dat');
         renderCommand = sprintf('pbrt --outfile %s %s', outF, strcat(currName, '.pbrt'));
@@ -298,6 +301,10 @@ for ii = 1:length(filesToRender)
 
         cmd = sprintf('%s %s %s', dockerCommand, dockerImageName, renderCommand);
     end
+    %}
+    cmd = piDockerBuildCommand(outFile, currFile, outputFolder,...
+                                dockerImageName);
+    
 
     %% Determine if prefer to use existing files, and if they exist.
     if p.Results.reuse
